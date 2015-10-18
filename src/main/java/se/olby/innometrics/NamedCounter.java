@@ -21,8 +21,16 @@ public class NamedCounter {
         return "";
     }
 
-    /** Init a counter **/ 
+    /** Read a counter **/
     @GET
+    @Path("{counter}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String read(@PathParam("counter") String counter) {
+        return counter;
+    }
+
+    /** Init a counter **/
+    @PUT
     @Path("{counter}")
     @Produces(MediaType.TEXT_PLAIN)
     public String init(@PathParam("counter") String counter) {
