@@ -14,7 +14,6 @@ public class NamedCounter {
 
     /** List counters **/ 
     @GET
-    @Path("/")
     @Produces(MediaType.TEXT_PLAIN)
     public String list() {
         return "";
