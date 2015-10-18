@@ -15,7 +15,7 @@ public class Server {
         ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");
         jerseyServlet.setInitOrder(0);
  
-        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", NamedCounter.class.getCanonicalName());
+        jerseyServlet.setInitParameter("javax.ws.rs.Application", NamedCounterApplication.class.getCanonicalName());
  
         try {
             jettyServer.start();
