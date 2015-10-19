@@ -9,7 +9,7 @@ public class Server {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
 
-        int port = Integer.valueOf(System.getenv("PORT");
+        int port = Integer.valueOf(System.getenv("PORT"));
         org.eclipse.jetty.server.Server jettyServer = new org.eclipse.jetty.server.Server(port);
         jettyServer.setHandler(context);
  
