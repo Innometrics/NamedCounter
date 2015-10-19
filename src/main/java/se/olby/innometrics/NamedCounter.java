@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import io.swagger.annotations.Api;
 
+import javax.inject.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -13,11 +14,12 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @Api
 @Path("/")
+@Singleton
 public class NamedCounter {
     //A SkipListMap let us navigate without blocking. Used for the list method
-    private final static ConcurrentNavigableMap<String, Integer> counters = new ConcurrentSkipListMap<>();
+    private final ConcurrentNavigableMap<String, Integer> counters = new ConcurrentSkipListMap<>();
 
-    private final static JsonFactory jfactory = new JsonFactory();
+    private final JsonFactory jfactory = new JsonFactory();
 
     /** List counters **/
     @GET
