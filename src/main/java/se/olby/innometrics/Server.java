@@ -6,13 +6,13 @@ import org.glassfish.jersey.servlet.ServletContainer;
 
 public class Server {
     public static void main(String[] args) throws Exception {
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
 
         int port = Integer.valueOf(System.getenv("PORT"));
         org.eclipse.jetty.server.Server jettyServer = new org.eclipse.jetty.server.Server(port);
         jettyServer.setHandler(context);
- 
+
         ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");
         jerseyServlet.setInitOrder(0);
  
