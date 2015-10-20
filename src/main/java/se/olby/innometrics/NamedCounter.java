@@ -52,15 +52,31 @@ public class NamedCounter {
     @GET
     @Produces(MediaType.TEXT_HTML)
     @ApiOperation(
+            value = "Project links"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = MESSAGE_200),
+            })
+    public Response index() {
+        return Response
+                .ok(ClassLoader.getSystemResourceAsStream("index.html"))
+                .build();
+    }
+
+    @GET
+    @Path("api.html")
+    @Produces(MediaType.TEXT_HTML)
+    @ApiOperation(
             value = "HTML documentation"
     )
     @ApiResponses(
             value = {
                     @ApiResponse(code = 200, message = MESSAGE_200),
             })
-    public Response readme() {
+    public Response api() {
         return Response
-                .ok(ClassLoader.getSystemResourceAsStream("readme.html"))
+                .ok(ClassLoader.getSystemResourceAsStream("api.html"))
                 .build();
     }
 
@@ -81,6 +97,7 @@ public class NamedCounter {
         StreamingOutput stream = os -> {
             JsonGenerator jsonGenerator = jfactory.createGenerator(os);
             jsonGenerator.writeStartObject();
+
             for (String key: counters.keySet()) {
                 Integer value = counters.get(key);
                 //The underlying map may have changed since we retrieved the key
@@ -88,6 +105,7 @@ public class NamedCounter {
                     jsonGenerator.writeNumberField(key, value);
                 }
             }
+
             jsonGenerator.writeEndObject();
             jsonGenerator.close();
         };
@@ -205,11 +223,13 @@ public class NamedCounter {
                         .status(Response.Status.NOT_FOUND)
                         .entity(Error.of(MISSING))
                         .build();
+
             if(value != condition)
                 return Response
                         .status(Response.Status.EXPECTATION_FAILED)
                         .entity(Error.of(CAS_EXPECTATION))
                         .build();
+
             //Spin iff backing value has been concurrently changed after the above check and before remove is executed
             if(counters.remove(counter, condition))
                 return Response
@@ -274,11 +294,13 @@ public class NamedCounter {
                         .status(Response.Status.NOT_FOUND)
                         .entity(Error.of(MISSING))
                         .build();
+
             if(value != condition)
                 return Response
                         .status(Response.Status.EXPECTATION_FAILED)
                         .entity(Error.of(CAS_EXPECTATION))
                         .build();
+
             //Spin iff backing value has been concurrently changed after the above check and before replace is executed
             if(counters.replace(counter, condition, condition + 1))
                 return Response
@@ -286,5 +308,4 @@ public class NamedCounter {
                         .build();
         }
     }
-
 }
